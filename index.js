@@ -15,9 +15,33 @@
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
 }
+
+Person.prototype.eat = function(someFood) {
+  if(this.stomach.length < 10){
+    this.stomach.push(someFood)
+    return `${this.name} just ate ${this.stomach}!`
+  } else {
+    return `${this.name} is full!!`
+  }
+}
+
+Person.prototype.poop = function () {
+    return this.stomach = [];
+  }
+
+Person.prototype.toString = function() {
+  return `${this.name}, ${this.age}`
+}
+
+const notAlien = new Person("notAlien", 23)
+console.log(notAlien)
+console.log(notAlien.eat(["steakk", "noodle", "cofi", "bb-qt?"]))
+console.log(notAlien.toString())
 
 
 /*
@@ -36,10 +60,52 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
 }
 
+Car.prototype.fill = function(gallons) {
+  if(typeof gallons === 'string') {
+    return `that's not a number!`;
+  } else if (typeof gallons === 'number') {
+    return this.tank += gallons;
+  }
+}
+Car.prototype.availMiles = function() {
+  return this.tank * this.milesPerGallon
+}
+
+Car.prototype.drive = function(distance) {
+
+  if(typeof distance === 'string') {
+    return `that's not a number!`;
+  } else if(typeof distance === 'number') {
+    
+    if(distance < this.availMiles()) {
+      this.tank = (this.tank - (distance / this.milesPerGallon)).toFixed(2)
+      this.odometer += distance;
+      console.log("if inside if")
+      return `${this.model} has ${this.tank} gallons left, and ${this.odometer} on the odometer`;
+      
+    } else if(distance > this.availMiles()) {
+      let remain = this.tank -= (this.availMiles() - distance)
+      this.odometer += distance + remain;
+      console.log('hello?')
+      return `I ran out of fuel at ${this.odometer} on the odometer`
+    } else {
+      return console.log('helloooooo????')
+    }
+  } 
+}
+
+const mit = new Car("Mitsubishi", 30)
+console.log(mit)
+console.log(mit.fill(5))
+console.log(mit.availMiles())
+console.log(mit.drive(130))
 
 /*
   TASK 3
@@ -49,18 +115,45 @@ function Car() {
         + Should return a string "Playing with x", x being the favorite toy.
 */
 
-function Baby() {
-
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age)
+  this.favoriteToy = favoriteToy;
 }
 
+Baby.prototype = Object.create(Person.prototype)
+
+Baby.prototype.play = function() {
+  return `Playing with ${this.favoriteToy}`
+}
+
+const notAlienBaby = new Baby("Galexi", 500, "star bobble")
+
+console.log(notAlienBaby)
+console.log(notAlienBaby.play())
 
 /* 
   TASK 4
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Global, windows/console context:
+      This is where, the "this" keyword is not within another object,
+      other than the global object, which on browser is the window/console.
+  2. Implicit Binding: 
+      This is when the "this" keyword is mentioned within an object. Therefore, when
+      "this" is used, it refers back to the object that contains it (if a method, ex .forEach(), is called
+      after an object's name, the objects name is what "this" refers to)
+  3. New Binding: 
+      This is when a constructor function is used. A constructor function is a function that is a template for an object,
+      and all the arguments that are input, are attatched to the object, and a new object is output. The "this" keyword in this instance
+      refers to the object that is being created. If an object that is going through a constructor function is assigned to a variable, that
+      variable can be used outside of the object, to refer to it's methods that are linked. However, inside the object that is being created,
+      "this" can be used in place of the name of the object, and all properties that follow "this" will link to the object's properties being accessed.
+  4. Explicit Binding: 
+      This is when the methods (".bind", ".call", and ".apply") are used, although ".apply" is not as common and can do about the same things that 
+      ".call" does, so ".call" is more generally used. Explicit Binding in the case of these methods are used for binding two functions together.
+      This is where one function can INHERIT the properties and values of another function, without having to copy and paste, also, without adding 
+      new properties to the original function. So, when using "this", if you want to link originalFunction to newFunction, inside newFunction, you
+      can use the ".call" method (originalFunction.call(this, newParamName)). This will link what is inside the call() parentheses, to what comes before
+      the "." and have the information that the originalFunction contains, into the newFunction.
 */
 
 ///////// END OF CHALLENGE /////////
