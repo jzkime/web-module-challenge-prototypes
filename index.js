@@ -87,7 +87,7 @@ Car.prototype.drive = function(distance) {
       this.odometer += distance;
       return `${this.model} has ${this.tank} gallons left, and ${this.odometer} on the odometer`;
       
-    } else if(distance > availMiles) {
+    } else if(distance >= availMiles) {
       let remain = availMiles - distance
       this.tank -= (remain/this.milesPerGallon)
       this.odometer += distance + remain;
@@ -101,7 +101,7 @@ Car.prototype.drive = function(distance) {
 const mit = new Car("Mitsubishi", 30)
 console.log(mit)
 console.log(mit.fill(1))
-console.log(mit.drive(120))
+console.log(mit.drive(30))
 
 /*
   TASK 3
