@@ -74,26 +74,23 @@ Car.prototype.fill = function(gallons) {
     return this.tank += gallons;
   }
 }
-Car.prototype.availMiles = function() {
-  return this.tank * this.milesPerGallon
-}
 
 Car.prototype.drive = function(distance) {
+  let availMiles = this.tank * this.milesPerGallon
 
   if(typeof distance === 'string') {
     return `that's not a number!`;
   } else if(typeof distance === 'number') {
     
-    if(distance < this.availMiles()) {
+    if(distance < availMiles) {
       this.tank = (this.tank - (distance / this.milesPerGallon)).toFixed(2)
       this.odometer += distance;
-      console.log("if inside if")
       return `${this.model} has ${this.tank} gallons left, and ${this.odometer} on the odometer`;
       
-    } else if(distance > this.availMiles()) {
-      let remain = this.tank -= (this.availMiles() - distance)
+    } else if(distance > availMiles) {
+      let remain = availMiles - distance
+      this.tank -= (remain/this.milesPerGallon)
       this.odometer += distance + remain;
-      console.log('hello?')
       return `I ran out of fuel at ${this.odometer} on the odometer`
     } else {
       return console.log('helloooooo????')
@@ -103,9 +100,8 @@ Car.prototype.drive = function(distance) {
 
 const mit = new Car("Mitsubishi", 30)
 console.log(mit)
-console.log(mit.fill(5))
-console.log(mit.availMiles())
-console.log(mit.drive(130))
+console.log(mit.fill(1))
+console.log(mit.drive(120))
 
 /*
   TASK 3
@@ -128,8 +124,8 @@ Baby.prototype.play = function() {
 
 const notAlienBaby = new Baby("Galexi", 500, "star bobble")
 
-console.log(notAlienBaby)
-console.log(notAlienBaby.play())
+// console.log(notAlienBaby)
+// console.log(notAlienBaby.play())
 
 /* 
   TASK 4
